@@ -2,11 +2,6 @@
 
 This guide will help you set up and run the Django project using Docker and Docker Compose. Please follow the steps below to get started.
 
-## Need Help?
-If you encounter any issues, please feel free to reach out:
-- **Phone:** 660-238-6522
-- **Email:** amwwfm@umsystem.edu
-
 ## Prerequisites
 
 - Ensure that you have [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/) installed on your machine.
