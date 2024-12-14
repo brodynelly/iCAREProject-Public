@@ -1,0 +1,53 @@
+{% extends "_base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    
+    <!-- Create Document Type Card -->
+    
+      <div class="col-md-6">
+        <div class="card-custom p-4 mb-4 shadow-sm">
+          <h2 class="document-title text-center mb-4">Create Document Type</h2>
+          
+          <form method="post">
+            {% csrf_token %}
+            {{ form | crispy }}
+            {% if fields %}
+            <button class="button-primary button-lg w-100" type="submit">Save Document Type</button>
+            {% endif %}
+          </form>
+        </div>
+      </div>
+    
+
+
+    <!-- Add Fields Card -->
+    <div class="col-md-6">
+      <div class="card-custom p-4 mb-4 shadow-sm">
+        <h2 class="document-title text-center mb-4">Add Fields for this Document</h2>
+        <form method="post">
+          {% csrf_token %}
+          {{ field_form | crispy }}
+          <button type="submit" name="add_field" class="button-secondary button-lg w-100 mb-4">Add Field</button>
+        </form>
+
+        <h4 class="text-center mt-4">Current Fields</h4>
+        <ul class="list-group">
+          {% for field in fields %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            {{ field.name }} ({{ field.field_type }})
+            <form method="post" style="display:inline;">
+              {% csrf_token %}
+              <button type="submit" name="remove_field" value="{{ field.id }}" class="btn btn-danger btn-sm">Remove</button>
+            </form>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock content %}

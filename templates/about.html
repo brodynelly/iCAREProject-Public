@@ -1,0 +1,61 @@
+{% extends "_base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container my-5">
+  <!-- Page Title -->
+  <h1 class="jumbotron-title text-center mb-5">About This App</h1>
+
+  <!-- Brief Description -->
+  <div class="mb-4">
+    <p>
+      This app is designed to make document management simple and efficient. With user-friendly features, 
+      it’s easy to create, upload, and manage documents in one place. Whether you're organizing files, 
+      generating new documents, or managing document types, our app is here to streamline your workflow.
+    </p>
+  </div>
+
+  <!-- Key Features Section with Cards -->
+  <div class="row">
+    <!-- Feature 1 -->
+    <div class="col-md-6 mb-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title">Create Document Types</h5>
+          <p class="card-text">Easily set up and save custom document types tailored to your needs.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature 2 -->
+    <div class="col-md-6 mb-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title">Upload PDF Files</h5>
+          <p class="card-text">Quickly upload and organize PDF files, keeping all your documents accessible.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature 3 -->
+    <div class="col-md-6 mb-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title">Add Fields to Documents</h5>
+          <p class="card-text">Customize document templates by adding specific fields for better organization.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature 4 -->
+    <div class="col-md-6 mb-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title">Simple Interface</h5>
+          <p class="card-text">Designed with a user-friendly interface for quick access and easy navigation.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

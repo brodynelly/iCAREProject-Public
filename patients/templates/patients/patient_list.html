@@ -1,0 +1,155 @@
+{% extends '_base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="jumbotron-title">Patient List</h2>
+      <div>
+        {% if user.is_superuser %}
+          <a href="{% url 'patient_add' %}" class="btn btn-primary">
+            <i class="fas fa-plus-circle"></i> Add New Patient
+          </a>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Search and Filter Section -->
+    <div class="card mb-4 shadow-sm rounded-3">
+      <div class="card-body">
+        <form method="get" action="">
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <div class="input-group">
+                <input type="text" name="search" class="form-control" placeholder="Search patients..." value="{{ request.GET.search }}">
+  
+              </div>
+            </div>
+            <div class="col-md-3 mb-3">
+              <select name="sort" class="form-select">
+                <option value="name" {% if request.GET.sort == 'name' %}selected{% endif %}>Sort by Name</option>
+                <option value="date_of_birth" {% if request.GET.sort == 'date_of_birth' %}selected{% endif %}>Sort by Date of Birth</option>
+                <option value="bed_id" {% if request.GET.sort == 'bed_id' %}selected{% endif %}>Sort by Bed ID</option>
+              </select>
+            </div>
+            <div class="col-md-3 mb-3">
+              <select name="treatment_state" class="form-select">
+                <option value="">All States</option>
+                <option value="unassigned" {% if request.GET.treatment_state == 'unassigned' %}selected{% endif %}>Unassigned</option>
+                <option value="nurse_assigned" {% if request.GET.treatment_state == 'nurse_assigned' %}selected{% endif %}>Nurse Assigned</option>
+                <option value="doctor_assigned" {% if request.GET.treatment_state == 'doctor_assigned' %}selected{% endif %}>Doctor Assigned</option>
+              </select>
+            </div>
+            <div class="col-md-2 text-end">
+              <button class="btn btn-primary w-100" type="submit">Apply Filters</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Patient List Section -->
+    <div class="card shadow-sm rounded-3">
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table align-middle text-center mb-0">
+            {% if patients %}
+            <!-- Pagination Summary -->
+            <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
+              <div class="text-muted">
+                All Patients
+            </div>
+              <div class="text-muted">
+                Showing {{ page_obj.start_index }} - {{ page_obj.end_index }} of {{ page_obj.paginator.count }} patients
+              </div>
+              <nav aria-label="Page navigation">
+                <ul class="pagination mb-0">
+                  {% if page_obj.has_previous %}
+                    <li class="page-item">
+                      <a class="page-link" href="?search={{ request.GET.search }}&sort={{ request.GET.sort }}&treatment_state={{ request.GET.treatment_state }}&items_per_page={{ request.GET.items_per_page }}&page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                      </a>
+                    </li>
+                  {% endif %}
+                  {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                      <li class="page-item active">
+                        <a class="page-link" href="?search={{ request.GET.search }}&sort={{ request.GET.sort }}&treatment_state={{ request.GET.treatment_state }}&items_per_page={{ request.GET.items_per_page }}&page={{ num }}">{{ num }}</a>
+                      </li>
+                    {% elif num > page_obj.number|add:"-3" and num < page_obj.number|add:"3" %}
+                      <li class="page-item">
+                        <a class="page-link" href="?search={{ request.GET.search }}&sort={{ request.GET.sort }}&treatment_state={{ request.GET.treatment_state }}&items_per_page={{ request.GET.items_per_page }}&page={{ num }}">{{ num }}</a>
+                      </li>
+                    {% elif num == 1 or num == page_obj.paginator.num_pages %}
+                      <li class="page-item">
+                        <a class="page-link" href="?search={{ request.GET.search }}&sort={{ request.GET.sort }}&treatment_state={{ request.GET.treatment_state }}&items_per_page={{ request.GET.items_per_page }}&page={{ num }}">{{ num }}</a>
+                      </li>
+                    {% elif forloop.first or forloop.last %}
+                      <li class="page-item">
+                        <a class="page-link">...</a>
+                      </li>
+                    {% endif %}
+                  {% endfor %}
+                  {% if page_obj.has_next %}
+                    <li class="page-item">
+                      <a class="page-link" href="?search={{ request.GET.search }}&sort={{ request.GET.sort }}&treatment_state={{ request.GET.treatment_state }}&items_per_page={{ request.GET.items_per_page }}&page={{ page_obj.next_page_number }}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                      </a>
+                    </li>
+                  {% endif %}
+                </ul>
+              </nav>
+            </div>
+
+            <!-- Table Header -->
+            <thead class="text-secondary bg-dark">
+              <tr>
+                <th>Name</th>
+                <th>Date of Birth</th>
+                <th>Bed ID</th>
+                <th>Treatment Area</th>
+                <th>Geocode</th>
+                <th>Treatment State</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+
+            <!-- Table Body -->
+            <tbody>
+              {% for patient in patients %}
+                <tr class="border-bottom">
+                  <td>{{ patient.name }}</td>
+                  <td>{{ patient.date_of_birth }}</td>
+                  <td>{{ patient.bed_id }}</td>
+                  <td>{{ patient.treatment_area }}</td>
+                  <td>{{ patient.geocode.name }}</td>
+                  <td>
+                    {% if patient.state == 'doctor_assigned' %}
+                      <span class="badge bg-success">Doctor Assigned</span>
+                    {% elif patient.state == 'nurse_assigned' %}
+                      <span class="badge bg-primary">Nurse Assigned</span>
+                    {% elif patient.state == 'unassigned' %}
+                      <span class="badge bg-secondary">Unassigned</span>
+                    {% else %}
+                      <span class="badge bg-secondary">{{ patient.state }}</span>
+                    {% endif %}
+                  </td>            
+                  <td>
+                    <a href="{% url 'patient_detail' patient.pk %}" class="btn btn-outline-info btn-sm me-1">View</a>
+                    <a href="{% url 'patient_edit' patient.pk %}" class="btn btn-outline-secondary btn-sm me-1">Edit</a>
+                    {% if user.is_superuser %}
+                      <a href="{% url 'patient_delete' patient.pk %}" class="btn btn-outline-danger btn-sm">Delete</a>
+                    {% endif %}
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <div class="text-muted text-center py-4">No patients available to display.</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

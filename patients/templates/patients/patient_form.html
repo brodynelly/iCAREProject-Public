@@ -1,0 +1,18 @@
+{% extends '_base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <div class="container mt-5">
+    <div class="card shadow-sm p-4">
+      <h2 class="text-center mb-4">Add Patient</h2>
+      <form method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <div class="d-flex justify-content-between mt-4">
+          <a href="{% url 'patient_list' %}" class="btn btn-secondary">Back to Patient List</a>
+          <button type="submit" class="btn btn-primary">Add Patient</button>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}

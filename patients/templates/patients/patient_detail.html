@@ -1,0 +1,61 @@
+{% extends '_base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Patient Details{% endblock title %}
+
+{% block content %}
+  <div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="display-6">Patient Details</h2>
+      <a href="{% url 'patient_list' %}" class="btn btn-secondary">
+        <i class="fas fa-arrow-left"></i> Back to Patient List
+      </a>
+    </div>
+
+    <!-- Patient Details Card -->
+    <div class="card shadow-sm border-0 rounded-3 mb-5">
+      <div class="card-body">
+        <h4 class="card-title mb-4">{{ patient.name }}</h4>
+
+        <ul class="list-group list-group-flush mb-4">
+          <li class="list-group-item"><strong>Address:</strong> {{ patient.address }}</li>
+          <li class="list-group-item"><strong>Date of Birth:</strong> {{ patient.date_of_birth }}</li>
+          <li class="list-group-item"><strong>Height (in):</strong> {{ patient.height }}</li>
+          <li class="list-group-item"><strong>Weight (lbs):</strong> {{ patient.weight }}</li>
+          <li class="list-group-item"><strong>Blood Group:</strong> {{ patient.blood_group }}</li>
+          <li class="list-group-item"><strong>Bed ID:</strong> {{ patient.bed_id }}</li>
+          <li class="list-group-item"><strong>Treatment Area:</strong> {{ patient.treatment_area }}</li>
+        </ul>
+
+        <!-- Documents Section -->
+        <div class="mt-5">
+          <h5 class="mb-3">Documents</h5>
+          {% if patient.documents.all %}
+            <ul class="list-group">
+              {% for document in patient.documents.all %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  <a href="{% url 'document_detail' document.pk %}" class="text-decoration-none">{{ document.title }}</a>
+                  <span class="text-muted">(created on {{ document.creation_date|date:"Y-m-d" }})</span>
+                </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p class="text-muted">No documents available for this patient.</p>
+          {% endif %}
+        </div>
+
+        <!-- Actions Section -->
+        <div class="text-center mt-5">
+          {% if user.is_superuser %}
+            <a href="{% url 'patient_edit' patient.pk %}" class="btn btn-primary me-3">
+              <i class="fas fa-edit"></i> Edit Patient
+            </a>
+            <a href="{% url 'patient_delete' patient.pk %}" class="btn btn-danger">
+              <i class="fas fa-trash-alt"></i> Delete Patient
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

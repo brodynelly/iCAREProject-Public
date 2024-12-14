@@ -1,0 +1,219 @@
+{% extends '_base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <div class="container mt-4">
+    <div class="my-4">
+      <h2 class="jumbotron-title mb-1">iCARE Board</h2>
+      <p class="fs-5 text-muted mb-2">Region: <strong>{{ geocode.name }}</strong></p>
+      <p class="text-secondary">{{ geocode.description }}</p>
+    </div>
+    
+
+    <!-- Search and Filter Section -->
+
+    <div class="card mb-4 shadow-sm rounded-3">
+      <div class="card-body">
+        <form method="get" action="">
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <div class="input-group">
+                <input type="text" name="search" class="form-control" placeholder="Search patients..." value="{{ search_query }}">
+              </div>
+            </div>
+            <div class="col-md-3 mb-3">
+              <select name="sort" class="form-select">
+                <option value="name" {% if sort_by == 'name' %}selected{% endif %}>Sort by Name</option>
+                <option value="treatment_area" {% if sort_by == 'treatment_area' %}selected{% endif %}>Sort by Treatment Area</option>
+              </select>
+            </div>
+            <div class="col-md-3 mb-3">
+              <select name="paginate_by" class="form-select">
+                <option value="5" {% if paginate_by == '5' %}selected{% endif %}>5 per page</option>
+                <option value="10" {% if paginate_by == '10' %}selected{% endif %}>10 per page</option>
+                <option value="20" {% if paginate_by == '20' %}selected{% endif %}>20 per page</option>
+                <option value="50" {% if paginate_by == '50' %}selected{% endif %}>50 per page</option>
+              </select>
+            </div>
+            <div class="col-md-2 text-end">
+              <button class="btn btn-primary w-100" type="submit">Apply Filters</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+
+    <!-- Patient List Section -->
+    <div class="card shadow-sm rounded-3">
+      <div class="card-body p-0 rounded-3">
+        <div class="table-responsive">
+          <table class="table align-middle text-center mb-0">
+            {% if patients %}
+            <!-- Pagination Summary with Region Dropdown -->
+            <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
+                <div class="text-muted">
+                    Patients
+                </div>
+              <div class="d-flex align-items-center">
+                <span class="text-muted me-2">Region:</span>
+                <form id="geocodeForm" class="d-inline-block" data-base-url="{% url 'icare_board' %}">
+                  <select id="geocodeSelect" class="form-select me-2" style="width: auto; display: inline-block;">
+                    <option value="{{ geocode.id }}" selected>
+                      {{ geocode.name }}
+                    </option>
+                    {% for other_geocode in other_geocodes %}
+                      <option value="{{ other_geocode.id }}">
+                        {{ other_geocode.name }}
+                      </option>
+                    {% endfor %}
+                  </select>
+                  <button type="button" class="btn btn-outline-secondary" onclick="submitForm()">CHANGE</button>
+                </form>
+              </div>
+              <div class="text-muted">
+                Showing {{ page_obj.start_index }} - {{ page_obj.end_index }} of {{ page_obj.paginator.count }} patients
+              </div>
+              <nav aria-label="Page navigation">
+                <ul class="pagination mb-0">
+                  {% if page_obj.has_previous %}
+                    <li class="page-item">
+                      <a class="page-link" href="?search={{ search_query }}&sort={{ sort_by }}&paginate_by={{ paginate_by }}&page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                      </a>
+                    </li>
+                  {% endif %}
+                  {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                      <li class="page-item active">
+                        <a class="page-link" href="?search={{ search_query }}&sort={{ sort_by }}&paginate_by={{ paginate_by }}&page={{ num }}">{{ num }}</a>
+                      </li>
+                    {% elif num > page_obj.number|add:"-3" and num < page_obj.number|add:"3" %}
+                      <li class="page-item">
+                        <a class="page-link" href="?search={{ search_query }}&sort={{ sort_by }}&paginate_by={{ paginate_by }}&page={{ num }}">{{ num }}</a>
+                      </li>
+                    {% elif num == 1 or num == page_obj.paginator.num_pages %}
+                      <li class="page-item">
+                        <a class="page-link" href="?search={{ search_query }}&sort={{ sort_by }}&paginate_by={{ paginate_by }}&page={{ num }}">{{ num }}</a>
+                      </li>
+                    {% elif forloop.first or forloop.last %}
+                      <li class="page-item disabled">
+                        <a class="page-link">...</a>
+                      </li>
+                    {% endif %}
+                  {% endfor %}
+                  {% if page_obj.has_next %}
+                    <li class="page-item">
+                      <a class="page-link" href="?search={{ search_query }}&sort={{ sort_by }}&paginate_by={{ paginate_by }}&page={{ page_obj.next_page_number }}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                      </a>
+                    </li>
+                  {% endif %}
+                </ul>
+              </nav>
+            </div>
+
+            <!-- Table Header -->
+            <thead class="text-secondary bg-success">
+              <tr>
+                <th scope="col">Patient Name</th>
+                <th scope="col">Treatment Area</th>
+                <th scope="col">Bed ID</th>
+                <th scope="col">Assigned Status</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+
+            <!-- Table Body -->
+            <tbody>
+              {% for patient in patients %}
+                <tr class="border-bottom">
+                  <td>{{ patient.name }}</td>
+                  <td>{{ patient.treatment_area }}</td>
+                  <td>{{ patient.bed_id }}</td>
+                  <td>
+                    {% if patient.doctor_assigned %}
+                      <span class="badge bg-success">Doctor Assigned</span>
+                    {% else %}
+                    {% if patient.nurse_count > 0 %}
+                      <span class="badge bg-secondary">{{ patient.nurse_count }} Nurses Assigned</span>
+                    {% endif %}
+                    {% endif %}
+                    {% if patient.nurse_count < 1 %}
+                    {% if patient.doctor_assigned < 1 %}
+                      <span class="badge bg-danger">No Assignment</span>
+                    {% endif %}
+                    {% endif %}
+                  </td>
+                  <td>
+                    <form method="post" action="" class="d-inline-block">
+                      {% csrf_token %}
+                      <input type="hidden" name="patient_id" value="{{ patient.id }}">
+
+                      <!-- Nurse Logic -->
+                      {% if user.role.name == 'nurse' %}
+                          {% if patient.can_assign %}
+                              <input type="hidden" name="action" value="assign">
+                              <button type="submit" class="btn btn-primary btn-sm">Assign</button>
+                          {% elif patient.can_unassign %}
+                              <input type="hidden" name="action" value="unassign">
+                              <button type="submit" class="btn btn-danger btn-sm">Unassign</button>
+                          {% else %}
+                          <span class="badge bg-secondary">Max Nurses Assigned</span>
+                        {% endif %}
+                      {% elif user.role.name == 'doctor' %}
+                          {% if patient.can_assign %}
+                              <input type="hidden" name="action" value="assign">
+                              <button type="submit" class="btn btn-primary btn-sm">Assign</button>
+                          {% elif patient.nurse_count == 0 %}
+                            <span class="badge bg-danger">No Nurse Assigned</span>
+                          {% elif patient.can_unassign %}
+                              <input type="hidden" name="action" value="unassign">
+                              <button type="submit" class="btn btn-danger btn-sm">Unassign</button>
+                          {% else %}
+                            <span class="badge bg-secondary">Another Doctor Assigned</span>
+                          {% endif %}
+                      {% endif %}
+                    </form>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+            {% else %}
+            <tr>
+              <td colspan="5" class="text-muted py-4">No patients available to display.</td>
+            </tr>
+            {% endif %}
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    function submitForm() {
+      const geocodeForm = document.getElementById('geocodeForm');
+      const baseUrl = geocodeForm.getAttribute('data-base-url');
+      const geocodeSelect = document.getElementById('geocodeSelect');
+      const selectedGeocode = geocodeSelect.value;
+  
+      if (selectedGeocode) {
+        // Construct the new URL by appending the selected geocode_id to the base URL
+        let newUrl = `${baseUrl}${selectedGeocode}/`;
+  
+        // Capture existing query parameters
+        const currentUrl = new URL(window.location.href);
+        const queryParams = currentUrl.search;
+  
+        // Append the query parameters to the new URL
+        if (queryParams) {
+          newUrl += queryParams;
+        }
+  
+        // Redirect to the new URL
+        window.location.href = newUrl;
+      } else {
+        alert('Please select a region');
+      }
+    }
+  </script>
+{% endblock %}

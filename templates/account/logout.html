@@ -1,0 +1,22 @@
+{% extends "_base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Log Out{% endblock title %}
+
+{% block content %}
+  <div class="container-custom mt-5">
+    <div class="jumbotron-custom text-center shadow-sm mb-5">
+      <h2 class="jumbotron-title">Log Out</h2>
+      <p class="jumbotron-text mb-4">Are you sure you want to log out?</p>
+
+      <form action="{% url 'account_logout' %}" method="post" class="form-custom mt-4">
+        {% csrf_token %}
+        {{ form|crispy }}
+		<a href="{% url 'home' %}" class="button-primary button-lg mt-3">Return to Dashboard</a>
+        <button type="submit" class="button-secondary button-lg mt-3">Log Out</button>
+		
+		
+      </form>
+    </div>
+  </div>
+{% endblock content %}

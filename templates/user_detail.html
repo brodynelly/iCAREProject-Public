@@ -1,0 +1,16 @@
+{% extends '_base.html' %}
+
+{% block content %}
+  <div class="container">
+    <h2>User Details</h2>
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">{{ user.name }}</h5>
+        <p class="card-text"><strong>Email:</strong> {{ user.email }}</p>
+        <p class="card-text"><strong>Profession:</strong> {{ user.profession|default:"N/A" }}</p>
+        <p class="card-text"><strong>Role:</strong> {{ user.role.name|default:"N/A" }}</p>
+        <p class="card-text"><strong>Primary Geocode:</strong> {{ user.primary_geocode.name|default:"N/A" }}</p>
+      </div>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends "_base.html" %}
+{% load static %}
+
+{% block title %}Home{% endblock title %}
+
+{% block content %}
+  <div class="container-custom mt-5">
+
+    <!-- Jumbotron Section -->
+    <div class="jumbotron-custom text-center shadow-sm mb-5">
+
+
+      <h1 class="jumbotron-title">Welcome to iCARE</h1>
+      <hr class="my-4">
+      <div class="hero-section text-center shadow-sm mb-5 position-relative">
+        {% if user.role.name == "nurse" %}
+          <img src="{% static 'images/hero_nurse.png' %}" alt="Welcome to iCARE" class="img-fluid w-100">
+        {% endif %}
+        {% if user.role.name == "doctor" %}
+          <img src="{% static 'images/hero_doc.png' %}" alt="Welcome to iCARE" class="img-fluid w-100">
+        {% endif %}
+        {% if user.is_superuser %}
+        <img src="{% static 'images/hero_doc.png' %}" alt="Welcome to iCARE" class="img-fluid w-100">
+        {% endif %}
+      </div>
+      {% if user.is_authenticated %}
+        <p class="jumbotron-text mb-4">Hello, {{ user.email }}! Ready to manage your patients and documents?</p>
+        <a class="button-primary button-lg" href="{% url 'my_board' %}" role="button">Go to My Board</a>
+        <a class="button-secondary button-lg ml-3" href="{% url 'account_logout' %}" role="button">Log Out</a>
+      {% else %}
+        <p class="jumbotron-text mb-4">Please log in to access your personalized dashboard and patient management tools.</p>
+        <a class="button-primary button-lg" href="{% url 'account_login' %}" role="button">Log In</a>
+      {% endif %}
+    </div>
+
+      <!-- Hero Section -->
+
+    {% if user.is_authenticated %}
+    <div class="row mt-5">
+      <!-- Manage Patients Card -->
+      <div class="col-lg-4 col-md-6 mb-4">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body text-center">
+            <h5 class="card-title">Manage Patients</h5>
+            <p class="card-text">View and manage patient records efficiently.</p>
+            <div class="d-flex flex-column align-items-center">
+              <a href="{% url 'patient_list' %}" class="button-primary button-lg mt-3">Manage Patients</a>
+              <a href="{% url 'patient_add' %}" class="button-primary button-lg mt-3">Add Patients</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <!-- iCARE Board Card -->
+      <div class="col-lg-4 col-md-6 mb-4">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body text-center">
+            <h5 class="card-title">iCARE Board</h5>
+            <p class="card-text">View all patients across different units in the iCARE system.</p>
+            <div class="d-flex flex-column align-items-center">
+              <a href="{% url 'icare_board' %}" class="button-primary button-lg mt-3">Go to iCARE Board</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <!-- Document Management Card -->
+      <div class="col-lg-4 col-md-6 mb-4">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body text-center">
+            <h5 class="card-title">Document Management</h5>
+            <p class="card-text">Create and maintain important patient documents.</p>
+            <div class="d-flex flex-column align-items-center">
+              <a href="{% url 'document_list' %}" class="button-primary button-lg mt-3">Manage Documents</a>
+              <a href="{% url 'document_type_select' %}" class="button-primary button-lg mt-3">Add Documents</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+  </div>
+{% endblock content %}

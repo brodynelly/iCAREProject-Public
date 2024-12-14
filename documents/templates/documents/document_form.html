@@ -1,0 +1,25 @@
+{% extends '_base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <div class="container mt-5">
+    <div class="card shadow-sm p-4">
+      <h2 class="text-center mb-4">Create a New Document</h2>
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form|crispy }}  <!-- Renders the Summernote editor for content -->
+
+        <!-- Navigation and Submit Buttons -->
+        <div class="d-flex justify-content-between mt-4">
+          <a href="{% url 'document_list' %}" class="btn btn-secondary">Back to Document List</a>
+          <button type="submit" class="btn btn-primary">Save Document</button>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}
+
+{% block footer %}
+<script type="text/javascript" src="/static/collected/admin/js/vendor/jquery/jquery.js"></script>
+{{ form.media }}
+{% endblock footer %}

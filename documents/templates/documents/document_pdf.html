@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 20px;
+            }
+            h2 {
+                color: #333;
+            }
+            p {
+                margin: 5px 0;
+            }
+            .section {
+                margin-bottom: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="section">
+            <h2>{{ document.title }}</h2>
+            <p><strong>Patient:</strong> {{ document.patient.name }}</p>
+            <p><strong>Owner:</strong> {{ document.owner }}</p>
+            <p><strong>Document Type:</strong> {{ document.document_type }}</p>
+            <p><strong>Creation Date:</strong> {{ document.creation_date }}</p>
+        </div>
+
+        <!-- Add any additional document details here -->
+        <div class="section">
+            <h3>Content:</h3>
+            {% for field_value in document.field_values.all %}
+                <p><strong>{{ field_value.field.name }}:</strong> {{ field_value.value }}</p>
+            {% endfor %}
+        </div>
+    </body>
+</html>

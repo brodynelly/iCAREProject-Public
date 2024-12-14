@@ -1,0 +1,326 @@
+:root {
+  --bs-primary: #1e88e5; /* Set your primary color */
+  --bg-secondary: #184b86; /* Set your secondary color */
+  --fallback-color-bg-brand: #1e88e5;
+  --fallback-color-bg-brand-hover: #1565c0;
+  --fallback-color-bg-brand-pressed: #0d47a1;
+  --fallback-color-bg-brand-secondary: #1a237e;
+  --fallback-color-bg-brand-tertiary: #3949ab;
+  --fallback-color-text-brand: #1e88e5;
+  --fallback-color-text-brand-secondary: #42a5f5;
+  --fallback-color-text-brand-tertiary: #90caf9;
+  --fallback-color-icon-brand: #1e88e5;
+  --fallback-color-icon-brand-secondary: #42a5f5;
+  --fallback-color-icon-brand-tertiary: #90caf9;
+  --fallback-color-icon-brand-pressed: #0d47a1;
+  --fallback-color-border-brand: #1e88e5;
+  --fallback-color-icon-onbrand: #ffffff;
+  --fallback-color-text-onbrand: #ffffff;
+  --fallback-color-border-onbrand: #ffffff;
+}
+
+
+/* General body styling to edit the entire background */
+body {
+    background-color: #f9fafb; /* Cream background color */
+    font-family: Inter, sans-serif; 
+    padding: 0;
+    overflow: -moz-scrollbars-none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */
+  }
+  body::-webkit-scrollbar { 
+    display: none;  /* Safari and Chrome */
+}
+  
+  /* General container styling */
+  .container-custom {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+  
+  /* Jumbotron styling for the welcome message */
+  .jumbotron-custom {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 3rem;
+    box-shadow: 2.5 4px 25px rgba(0, 0, 0, 0.5);
+    border: 1px solid #e3e3e3;
+  }
+  
+  .jumbotron-title {
+    font-size: 2.75rem;
+    font-weight: 600;
+    color: #1e1e1e;
+  }
+  
+  .jumbotron-text {
+    font-size: 1.15rem;
+    color: #4a4a4a;
+  }
+  
+  /* Button styling */
+  .button-lg {
+    padding: 0.75rem 1.25rem;
+    font-size: 1rem;
+    border-radius: 50px;
+    border: none;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 0.5rem;
+    transition: all 0.3s ease;
+    font-weight: bold;
+}
+
+.button-primary {
+    background-color: var(--fallback-color-bg-brand);
+    color: var(--fallback-color-text-onbrand);
+    border: none;
+}
+
+.button-primary:hover {
+    background-color: var(--fallback-color-bg-brand-hover);
+    color: var(--fallback-color-text-onbrand);
+}
+
+.button-secondary {
+    background-color: var(--fallback-color-icon-brand-tertiary);
+    color: var(--fallback-color-text);
+    border: none;
+}
+
+.button-secondary:hover {
+    background-color: var(--fallback-color-text-brand-tertiary);
+    color: var(--fallback-color-text);
+    border: 1px (var(--fallback-color-bg-brand-secondary))
+
+}
+  
+  /* Card styling */
+  .card-custom {
+    transition: transform 0.3s ease;
+    border-radius: 4px;
+    background-color: #ffffff;
+    overflow: hidden;
+    box-shadow: 2.5 4px 25px rgba(0, 0, 0, 0.5);
+    border: 1px solid #e3e3e3;
+  }
+  
+  .card-title-custom {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1e1e1e;
+    margin-bottom: 0.5rem;
+    text-align: center;
+  }
+  
+  .card-text-custom {
+    font-size: 1rem;
+    color: #4a4a4a;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Row and column layout for cards */
+  .row-custom {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    align-items: flex-start;
+  }
+  
+  .col-custom-lg-4,
+  .col-custom-md-6 {
+    flex: 1 1 calc(32% - 24px);
+    max-width: calc(32% - 24px);
+    box-sizing: border-box;
+  }
+  
+  @media (max-width: 768px) {
+    .col-custom-lg-4,
+    .col-custom-md-6 {
+      flex: 1 1 100%;
+      max-width: 100%;
+    }
+  }
+  
+  /* Allow cards to grow with content naturally */
+  .card-body-custom {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .card-body-custom a {
+    align-self: stretch;
+    margin-top: auto;
+  }
+  
+  /* Bottom row alignment for the Assign Patients card */
+  .row-custom.justify-content-center {
+    margin-top: 2rem;
+  }
+  
+  /* Add margin to the Assign Patients card for centering */
+  .col-custom-lg-4.col-custom-md-6.mb-4:last-child {
+    margin: 0 auto;
+  }
+  
+/* General Navbar Styling */
+.nav {
+    padding: 2rem, 1.25rem;
+  }
+  .navbar-brand img {
+    max-width: 150px; /* Set a limit on the brand logo width */
+  }
+  
+  .nav-link {
+    margin-top:0px; 
+    color: #333; /* Dark text color for links */
+    font-weight: 400;
+  }
+  
+  .nav-link:hover {
+    margin-top: 0px; 
+    color: #0070f3;
+  }
+
+  /* Enable dropdowns to open on hover */
+  .nav-item.dropdown:hover .dropdown-menu {
+
+    display: block;
+    margin-top: 0; /* Adjust to prevent shift in layout */
+  }
+  
+  /* Dropdown Menu Styling */
+  .dropdown-menu-custom {
+    border-radius: 8; /* Rounded edges for modern feel */
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15); /* Soft shadow for depth */
+    padding: 0.5rem;
+    border: none; /* Remove border for cleaner look */
+    background-color: #ffffff; /* White background for a clean look */
+  }
+  
+  .dropdown-item {
+    color: #1e1e1e; /* Text color */
+    padding: 0.75rem 1.5rem; /* Add padding for space */
+    margin: 5px 0; /* Space between dropdown items */
+    border-radius: 8px; /* Rounded corners */
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out; /* Smooth hover effect */
+  }
+  
+  .dropdown-item:hover {
+    background-color: #f0f0f0; /* Light gray background on hover for emphasis */
+    color: #0070f3; /* Change text to match the primary theme color */
+  }
+  
+  /* Dropdown Toggle Styling */
+  .nav-item.dropdown:hover > .nav-link {
+    color: #0070f3; /* Change link color on hover for better visual indication */
+  }
+  
+  /* Buttons Styling with Bootstrap Classes */
+  .btn-primary {
+    background-color: var(--fallback-color-bg-brand);
+    color: var(--fallback-color-text-onbrand);
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: var(--fallback-color-bg-brand-hover);
+}
+
+.btn-outline-secondary {
+    color: var(--fallback-color-text);
+    border: 1px solid var(var(--fallback-color-icon-brand-tertiary));
+}
+
+.btn-outline-secondary:hover {
+    background-color: var(--fallback-color-text-brand-tertiary);
+    color: var(--fallback-color-text);
+    border: 1px (var(--fallback-color-bg-brand-secondary))
+}
+
+  /* Navbar Toggler */
+  .navbar-toggler {
+    border: none;
+  }
+  
+  .navbar-toggler:focus {
+    outline: none;
+    box-shadow: none;
+  }
+  /* Primary Sidebar */
+.sidebar {
+  width: 250px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow-y: auto;
+  background-color: rgb(255, 255, 255);
+  border-radius: 8px;
+}
+
+/* Secondary Sidebar */
+.sidebar-secondary {
+  width: 250px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 250px; /* Position it to the right of the main sidebar */
+  overflow-y: auto;
+  z-index: 1000;
+  background: #f5faff;
+  border-radius: 8px;
+}
+
+/* Main content container to account for sidebars */
+.content-container {
+  margin-left: 250px; /* Offset for the main sidebar */
+  padding: 20px;
+  transition: margin-left 0.3s ease;
+}
+
+.content-container.with-secondary-sidebar {
+  margin-left: 500px; /* Offset for both sidebars */
+}
+
+/* Pagination Styling */
+.pagination .page-item .page-link {
+    color: var(--fallback-color-text);
+    background-color: var(--fallback-color-bg-secondary);
+    border: 1px solid var(--fallback-color-border);
+}
+
+.pagination .page-item.active .page-link {
+    
+    color: var(--fallback-color-text-brand);
+    border-radius: 8px;
+}
+
+.document-link {
+  color: #000; /* Keeps text dark by default */
+  transition: color 0.2s ease; /* Smooth transition for hover effect */
+}
+
+.document-link:hover {
+  color: #007bff; /* Changes to blue on hover */
+}
+
+a[href*="accounts/password/reset/"] {
+  display: none;
+}
+
+.hero-section img {
+  border: #fff solid 1px;
+  border-radius: 16px;
+}
+
+.hero-overlay {
+  color: #fff;
+  background: rgba(0, 0, 0, 0.5); /* Optional dark overlay */
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+}

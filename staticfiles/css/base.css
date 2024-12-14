@@ -1,0 +1,16 @@
+h1 {
+    color: blueviolet;
+}
+.bookcover {
+    height: 300px;
+    width: auto;
+}
+
+.formcontainer1 {
+    background-color: aqua;
+    width: 500px;
+}
+
+.list-element {
+    background-color: brown;
+}
