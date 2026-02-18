@@ -92,8 +92,6 @@ ipython_config.py
 celerybeat-schedule
 
 # dotenv
-.env
-.env.*
 
 # virtualenv
 .venv
@@ -129,3 +127,5 @@ cython_debug/
 .DS_Store
 
 docker-compose-prod.yml
+config.bat
+node_modules
